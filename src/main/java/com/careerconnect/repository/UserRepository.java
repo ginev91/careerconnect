@@ -1,7 +1,7 @@
-package com.careerconnect.careerconnect.repository;
+package com.careerconnect.repository;
 
 
-import com.careerconnect.careerconnect.model.User;
+import com.careerconnect.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
