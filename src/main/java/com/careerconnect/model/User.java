@@ -1,4 +1,4 @@
-package com.careerconnect.careerconnect.model;
+package com.careerconnect.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -20,6 +20,9 @@ public class User {
 
     @Email
     private String email;
+
+    @Column(length = 1000)
+    private String qualifications;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -47,4 +50,11 @@ public class User {
 
     public Role getRole() { return role; }
     public void setRole(Role role) { this.role = role; }
+
+    public String getQualifications() {
+        return qualifications;
+    }
+    public void setQualifications(String qualifications) {
+        this.qualifications = qualifications;
+    }
 }

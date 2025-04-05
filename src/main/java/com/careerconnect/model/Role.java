@@ -1,4 +1,4 @@
-package com.careerconnect.careerconnect.model;
+package com.careerconnect.model;
 
 public enum Role {
     USER,
