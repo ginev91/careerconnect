@@ -15,8 +15,8 @@ public class ExperienceReviewService {
         this.repo = repo;
     }
 
-    public List<ExperienceReview> getAll() {
-        return repo.findAll();
+    public List<ExperienceReview> getByCompanyId(Long companyId) {
+        return repo.findByCompanyId(companyId);
     }
 
     public void save(ExperienceReview review) {
@@ -26,4 +26,5 @@ public class ExperienceReviewService {
     public void delete(Long id) {
         repo.deleteById(id);
     }
+
 }

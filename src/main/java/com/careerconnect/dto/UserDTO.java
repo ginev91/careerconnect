@@ -1,4 +1,4 @@
-package com.careerconnect.careerconnect.dto;
+package com.careerconnect.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

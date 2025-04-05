@@ -1,6 +1,6 @@
-package com.careerconnect.careerconnect.config;
+package com.careerconnect.config;
 
-import com.careerconnect.careerconnect.service.CustomUserDetailService;
+import com.careerconnect.service.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

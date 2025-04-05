@@ -2,7 +2,6 @@ package com.careerconnect.controller;
 
 import com.careerconnect.model.Company;
 import com.careerconnect.model.ExperienceReview;
-import com.careerconnect.model.User;
 import com.careerconnect.service.CompanyService;
 import com.careerconnect.service.ExperienceReviewService;
 import com.careerconnect.service.UserService;
@@ -11,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/reviews")
@@ -28,15 +29,24 @@ public class ExperienceReviewController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public String showReviews(Model model) {
-        model.addAttribute("reviews", reviewService.getAll());
+    @GetMapping("/company/{companyId}")
+    public String showReviewsForCompany(@PathVariable Long companyId, Model model) {
+        List<ExperienceReview> reviews = reviewService.getByCompanyId(companyId);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("companyId", companyId);
         return "reviews";
     }
 
     @GetMapping("/add")
-    public String showAddForm(Model model) {
-        model.addAttribute("review", new ExperienceReview());
+    public String showAddForm(@RequestParam(required = false) Long companyId, Model model) {
+        ExperienceReview review = new ExperienceReview();
+
+        if (companyId != null) {
+            Company preselected = companyService.getById(companyId);
+            review.setCompany(preselected);
+        }
+
+        model.addAttribute("review", review);
         model.addAttribute("companies", companyService.getAllCompanies());
         model.addAttribute("users", userService.getAllUsers());
         return "review-add";
@@ -51,8 +61,9 @@ public class ExperienceReviewController {
             model.addAttribute("users", userService.getAllUsers());
             return "review-add";
         }
+
         reviewService.save(review);
-        return "redirect:/reviews";
+        return "redirect:/reviews/company/" + review.getCompany().getId();
     }
 
     @GetMapping("/delete/{id}")

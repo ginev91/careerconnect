@@ -20,6 +20,9 @@ public class ExperienceReview {
     @ManyToOne
     private Company company;
 
+    @Column(nullable = false)
+    private int rating; // from 1 to 5
+
     @ManyToOne
     private User user;
 
@@ -39,4 +42,11 @@ public class ExperienceReview {
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
+
+    public int getRating() {
+        return rating;
+    }
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
 }

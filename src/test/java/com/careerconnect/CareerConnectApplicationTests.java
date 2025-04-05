@@ -1,4 +1,4 @@
-package com.careerconnect.careerconnect;
+package com.careerconnect;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
