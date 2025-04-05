@@ -1,7 +1,7 @@
-package com.careerconnect.careerconnect.service;
+package com.careerconnect.service;
 
-import com.careerconnect.careerconnect.model.User;
-import com.careerconnect.careerconnect.repository.UserRepository;
+import com.careerconnect.model.User;
+import com.careerconnect.repository.UserRepository;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;

@@ -1,11 +1,13 @@
-package com.careerconnect.careerconnect.service;
+package com.careerconnect.service;
 
 
-import com.careerconnect.careerconnect.model.Role;
-import com.careerconnect.careerconnect.model.User;
-import com.careerconnect.careerconnect.repository.UserRepository;
+import com.careerconnect.model.Role;
+import com.careerconnect.model.User;
+import com.careerconnect.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -19,6 +21,10 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
     public void registerUser(String username, String email, String rawPassword) {
         String encodedPassword = passwordEncoder.encode(rawPassword);
         User user = new User(username, encodedPassword, email, Role.USER);
@@ -28,4 +34,15 @@ public class UserService {
     public boolean usernameExists(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow();
+    }
+
+    public void updateQualifications(String username, String qualifications) {
+        User user = findByUsername(username);
+        user.setQualifications(qualifications);
+        userRepository.save(user);
+    }
+
 }
