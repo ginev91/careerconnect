@@ -1,7 +1,7 @@
-package com.careerconnect.careerconnect.controller;
+package com.careerconnect.controller;
 
-import com.careerconnect.careerconnect.dto.UserDTO;
-import com.careerconnect.careerconnect.service.UserService;
+import com.careerconnect.dto.UserDTO;
+import com.careerconnect.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
