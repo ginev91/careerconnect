@@ -1,0 +1,18 @@
+<div class="container mt-5">
+    <div class="card p-4 shadow">
+        <h2>Your Profile</h2>
+
+        <div>
+            <strong>Username:</strong> <span th:text="${user.username}"></span><br/>
+            <strong>Email:</strong> <span th:text="${user.email}"></span><br/>
+        </div>
+
+        <form th:action="@{/profile/update}" method="post" th:object="${user}">
+            <div class="mb-3">
+                <label class="form-label">Qualifications (comma separated)</label>
+                <input type="text" th:field="*{qualifications}" class="form-control"/>
+            </div>
+            <button class="btn btn-primary">Update Profile</button>
+        </form>
+    </div>
+</div>

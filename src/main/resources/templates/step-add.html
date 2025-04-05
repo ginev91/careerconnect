@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add Interview Step</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+  <div class="card p-4 shadow">
+    <h2>Add Interview Process Step</h2>
+    <form th:action="@{/steps/add}" th:object="${step}" method="post">
+      <div class="mb-3">
+        <label class="form-label">Step Name</label>
+        <input type="text" class="form-control" th:field="*{stepName}">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" th:field="*{description}"></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Step Order</label>
+        <input type="number" class="form-control" th:field="*{stepOrder}">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Company</label>
+        <select class="form-select" th:field="*{company}">
+          <option th:each="c : ${companies}" th:value="${c.id}" th:text="${c.name}"></option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Step</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>
