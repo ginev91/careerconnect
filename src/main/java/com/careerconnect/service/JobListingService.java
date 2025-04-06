@@ -19,8 +19,9 @@ public class JobListingService {
         return repo.findAll();
     }
 
-    public void save(JobListing job) {
+    public JobListing save(JobListing job) {
         repo.save(job);
+        return job;
     }
 
     public void delete(Long id) {

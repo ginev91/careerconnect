@@ -1,6 +1,5 @@
 package com.careerconnect.controller;
 
-import com.careerconnect.model.Company;
 import com.careerconnect.model.JobListing;
 import com.careerconnect.service.CompanyService;
 import com.careerconnect.service.JobListingService;
@@ -9,8 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/jobs")
@@ -59,6 +56,6 @@ public class JobListingController {
     @GetMapping("/stream")
     public String showJobStream(Model model) {
         model.addAttribute("jobs", jobService.getAll());
-        return "job-stream";
+        return "language-stats";
     }
 }
