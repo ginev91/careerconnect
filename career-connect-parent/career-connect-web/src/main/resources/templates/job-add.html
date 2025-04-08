@@ -23,9 +23,13 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Company</label>
-                <select th:field="*{company}" class="form-select">
-                    <option th:each="company : ${companies}" th:value="${company.id}" th:text="${company.name}"></option>
+                <select th:field="*{companyId}" class="form-select">
+                    <option th:each="company : ${companies}"
+                            th:value="${company.id}"
+                            th:text="${company.name}">
+                    </option>
                 </select>
+
             </div>
             <button type="submit" class="btn btn-primary">Add Job</button>
         </form>

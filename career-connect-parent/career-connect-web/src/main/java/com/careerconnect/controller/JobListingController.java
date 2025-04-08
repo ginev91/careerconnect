@@ -1,6 +1,7 @@
 package com.careerconnect.controller;
 
 import com.careerconnect.careerconnectcommon.model.JobListing;
+import com.careerconnect.model.Company;
 import com.careerconnect.service.JobListingService;
 import com.careerconnect.service.CompanyService;
 import jakarta.validation.Valid;
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/jobs")
@@ -23,6 +27,11 @@ public class JobListingController {
 
     @GetMapping
     public String showJobs(Model model) {
+        Map<Long, String> companyMap = companyService.getAllCompanies()
+                .stream()
+                .collect(Collectors.toMap(Company::getId, Company::getName));
+
+        model.addAttribute("companyMap", companyMap);
         model.addAttribute("jobs", jobService.getAll());
         return "jobs";
     }

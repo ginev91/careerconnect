@@ -1,7 +1,7 @@
 package com.careerconnect.jobservice.controller;
 
 import com.careerconnect.jobservice.service.JobListingRestService;
-import com.careerconnect.model.JobListing;
+import com.careerconnect.careerconnectcommon.model.JobListing;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

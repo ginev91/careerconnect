@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class AppConfig {
 
-    @Bean
+    @Bean(name = "AppWebRestTemplate")
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
@@ -16,7 +16,7 @@ public class AppConfig {
     @Configuration
     public class WebClientConfig {
 
-        @Bean
+        @Bean(name = "AppWebClient")
         public WebClient webClient() {
             return WebClient.builder().build();
         }

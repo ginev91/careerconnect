@@ -1,42 +1,40 @@
 package com.careerconnect.jobservice.service;
 
-import com.careerconnect.model.JobListing;
+import com.careerconnect.careerconnectcommon.model.JobListing;
+import com.careerconnect.jobservice.repository.JobListingRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class JobListingRestService {
 
-    private final WebClient webClient;
+    private final JobListingRepository repo;
 
-    public JobListingRestService(WebClient.Builder builder) {
-        this.webClient = builder.baseUrl("http://localhost:8081/api/jobs").build();
+    public JobListingRestService(JobListingRepository repo) {
+        this.repo = repo;
     }
 
     public List<JobListing> getAll() {
-        return webClient.get()
-                .retrieve()
-                .bodyToMono(JobListing[].class)
-                .map(Arrays::asList)
-                .block(); // blocking for simplicity in controller
+        return repo.findAll();
     }
 
     public JobListing save(JobListing job) {
-        return webClient.post()
-                .bodyValue(job)
-                .retrieve()
-                .bodyToMono(JobListing.class)
-                .block();
+        try {
+            return repo.save(job);
+        } catch (Exception e) {
+            // Log the full stack trace
+            e.printStackTrace();
+
+            // Optionally, log specific info
+            System.err.println("Error saving JobListing: " + e.getMessage());
+
+            // Optional: rethrow or return null / custom fallback
+            throw new RuntimeException("Failed to save job", e);
+        }
     }
 
     public void delete(Long id) {
-        webClient.delete()
-                .uri("/{id}", id)
-                .retrieve()
-                .toBodilessEntity()
-                .block();
+        repo.deleteById(id);
     }
 }

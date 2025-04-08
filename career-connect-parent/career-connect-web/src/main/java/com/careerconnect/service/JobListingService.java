@@ -19,6 +19,10 @@ public class JobListingService {
         return webClient.get()
                 .retrieve()
                 .bodyToMono(JobListing[].class)
+                .doOnError(err -> {
+                    System.err.println("Error fetching jobs: " + err.getMessage());
+                    err.printStackTrace();
+                })
                 .map(Arrays::asList)
                 .block();
     }

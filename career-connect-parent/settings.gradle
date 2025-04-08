@@ -1,3 +1,4 @@
 rootProject.name = 'career-connect-parent'
 include 'career-connect-web'
-include 'job-service' 
+include 'job-service'
+include 'career-connect-common'
