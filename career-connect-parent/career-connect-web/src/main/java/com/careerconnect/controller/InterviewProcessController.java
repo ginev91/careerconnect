@@ -1,6 +1,5 @@
 package com.careerconnect.controller;
 
-import com.careerconnect.model.Company;
 import com.careerconnect.model.InterviewProcessStep;
 import com.careerconnect.service.CompanyService;
 import com.careerconnect.service.InterviewProcessStepService;

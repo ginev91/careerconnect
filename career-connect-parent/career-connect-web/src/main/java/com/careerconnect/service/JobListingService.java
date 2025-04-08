@@ -1,30 +1,41 @@
 package com.careerconnect.service;
 
-import com.careerconnect.model.JobListing;
-import com.careerconnect.repository.JobListingRepository;
+import com.careerconnect.careerconnectcommon.model.JobListing;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.reactive.function.client.WebClient;
 import java.util.List;
+import java.util.Arrays;
 
 @Service
 public class JobListingService {
 
-    private final JobListingRepository repo;
+    private final WebClient webClient;
 
-    public JobListingService(JobListingRepository repo) {
-        this.repo = repo;
+    public JobListingService(WebClient.Builder builder) {
+        this.webClient = builder.baseUrl("http://localhost:8081/api/jobs").build();
     }
 
     public List<JobListing> getAll() {
-        return repo.findAll();
+        return webClient.get()
+                .retrieve()
+                .bodyToMono(JobListing[].class)
+                .map(Arrays::asList)
+                .block();
     }
 
     public JobListing save(JobListing job) {
-        repo.save(job);
-        return job;
+        return webClient.post()
+                .bodyValue(job)
+                .retrieve()
+                .bodyToMono(JobListing.class)
+                .block();
     }
 
     public void delete(Long id) {
-        repo.deleteById(id);
+        webClient.delete()
+                .uri("/{id}", id)
+                .retrieve()
+                .toBodilessEntity()
+                .block();
     }
 }

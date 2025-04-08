@@ -1,9 +1,8 @@
-package com.careerconnect.rest.service;
+package com.careerconnect.jobservice.service;
 
 import com.careerconnect.model.JobListing;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;

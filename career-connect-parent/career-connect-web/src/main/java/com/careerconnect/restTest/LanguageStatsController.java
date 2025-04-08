@@ -1,4 +1,4 @@
-package com.careerconnect.rest.controller;
+package com.careerconnect.restTest;
 
 import com.careerconnect.dto.LanguageStat;
 import com.careerconnect.service.LanguageStatsService;

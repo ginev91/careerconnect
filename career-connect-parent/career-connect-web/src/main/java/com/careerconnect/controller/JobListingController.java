@@ -1,8 +1,8 @@
 package com.careerconnect.controller;
 
-import com.careerconnect.model.JobListing;
-import com.careerconnect.service.CompanyService;
+import com.careerconnect.careerconnectcommon.model.JobListing;
 import com.careerconnect.service.JobListingService;
+import com.careerconnect.service.CompanyService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

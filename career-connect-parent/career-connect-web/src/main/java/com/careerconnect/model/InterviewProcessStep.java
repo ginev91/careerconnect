@@ -1,5 +1,6 @@
 package com.careerconnect.model;
 
+import com.careerconnect.careerconnectcommon.model.Company;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 

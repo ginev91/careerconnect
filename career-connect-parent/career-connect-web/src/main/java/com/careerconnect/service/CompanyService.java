@@ -1,6 +1,6 @@
 package com.careerconnect.service;
 
-import com.careerconnect.model.Company;
+import com.careerconnect.careerconnectcommon.model.Company;
 import com.careerconnect.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 
