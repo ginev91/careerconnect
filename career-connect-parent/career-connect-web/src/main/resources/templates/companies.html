@@ -1,21 +1,111 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
-    <title>Companies</title>
-    <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title layout:fragment="title">Companies - CareerConnect</title>
 </head>
 <body>
-<h2>Companies</h2>
+    <div layout:fragment="content" class="content">
+        <!-- Header Section -->
+        <div class="row mb-4">
+            <div class="col">
+                <h1 class="display-4">
+                    <i class="fas fa-building me-2"></i>Companies
+                </h1>
+                <p class="lead text-muted">Explore interview experiences and processes from top tech companies</p>
+            </div>
+            <div class="col-auto" sec:authorize="isAuthenticated()">
+                <div class="btn-group">
+                    <a th:href="@{/reviews/add}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Share Experience
+                    </a>
+                    <a th:href="@{/steps/add}" class="btn btn-outline-primary ms-2">
+                        <i class="fas fa-list-ol me-2"></i>Add Interview Steps
+                    </a>
+                </div>
+            </div>
+        </div>
 
-<a th:href="@{/companies/add}">Add New Company</a>
+        <!-- Search and Filter -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form class="row g-3">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="Search companies...">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select">
+                            <option value="">All Roles</option>
+                            <option>Software Engineer</option>
+                            <option>Frontend Developer</option>
+                            <option>Backend Developer</option>
+                            <option>Full Stack Developer</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select">
+                            <option value="">All Locations</option>
+                            <option>United States</option>
+                            <option>Europe</option>
+                            <option>Asia</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search me-2"></i>Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
-<ul>
-    <li th:each="company : ${companies}">
-        <strong th:text="${company.name}">Company Name</strong> -
-        <span th:text="${company.description}">Description</span>
-        (<a th:href="@{'/companies/delete/' + ${company.id}}">Delete</a>)
-    </li>
-</ul>
+        <!-- Companies Grid -->
+        <div class="row">
+            <div th:each="company : ${companies}" class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://via.placeholder.com/50" class="rounded-circle me-3" th:alt="${company.name}">
+                            <div>
+                                <h5 class="card-title mb-0" th:text="${company.name}">Company Name</h5>
+                                <small class="text-muted" th:text="${company.location}">Location</small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <span class="badge bg-primary me-2" th:text="${companyReviews.get(company.id).size()} + ' Experiences'">0 Experiences</span>
+                            <span class="badge bg-success" th:if="${companyReviews.get(company.id).size() > 0}" 
+                                  th:text="${#numbers.formatDecimal(companyReviews.get(company.id).?[#this.rating].average(), 1, 1)} + '/5 Rating'">0/5 Rating</span>
+                        </div>
+                        <p class="card-text" th:text="${company.description}">Company description</p>
+                        <div class="d-grid gap-2">
+                            <a th:href="@{/reviews/company/{id}(id=${company.id})}" class="btn btn-outline-primary">
+                                <i class="fas fa-comments me-2"></i>View Experiences
+                            </a>
+                            <a th:href="@{/steps/company/{id}(id=${company.id})}" class="btn btn-outline-secondary">
+                                <i class="fas fa-list-ol me-2"></i>Interview Process
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(companies)}" class="text-center py-5">
+            <i class="fas fa-building fa-4x text-muted mb-3"></i>
+            <h3>No Companies Yet</h3>
+            <p class="text-muted">Be the first to share an interview experience!</p>
+            <div class="mt-3" sec:authorize="isAuthenticated()">
+                <a th:href="@{/reviews/add}" class="btn btn-primary me-2">
+                    <i class="fas fa-plus me-2"></i>Share Experience
+                </a>
+                <a th:href="@{/steps/add}" class="btn btn-outline-primary">
+                    <i class="fas fa-list-ol me-2"></i>Add Interview Steps
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

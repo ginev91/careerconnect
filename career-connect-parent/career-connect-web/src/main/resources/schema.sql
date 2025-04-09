@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    qualifications VARCHAR(1000),
+    role VARCHAR(50) NOT NULL
+    );
+
+CREATE TABLE IF NOT EXISTS companies (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    location VARCHAR(255),
+    website VARCHAR(255)
+    );

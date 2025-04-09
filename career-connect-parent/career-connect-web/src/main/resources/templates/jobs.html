@@ -1,37 +1,306 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
-    <title>Jobs</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title layout:fragment="title">Interview Experiences - CareerConnect</title>
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 1rem 1rem;
+        }
+        
+        .search-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .job-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #eee;
+        }
+        
+        .job-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .company-name {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .job-meta {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .job-tag {
+            display: inline-block;
+            background: #f8f9fa;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            margin: 0.25rem;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+        }
+        
+        .filter-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .filter-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .filter-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .filter-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .pagination {
+            margin-top: 2rem;
+        }
+        
+        .page-link {
+            color: var(--primary-color);
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+    </style>
 </head>
-<body class="bg-light">
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Job Listings</h2>
-        <a th:href="@{/jobs/add}" class="btn btn-success">Add Job</a>
+<body>
+    <div layout:fragment="content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="container">
+                <h1 class="display-4 mb-3">
+                    <i class="fas fa-briefcase me-2"></i>Interview Experiences
+                </h1>
+                <p class="lead mb-0">Discover and share interview experiences from top tech companies</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Search Section -->
+            <div class="search-section">
+                <form class="row g-3">
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" class="form-control" placeholder="Search experiences...">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select">
+                            <option value="">All Companies</option>
+                            <option>Google</option>
+                            <option>Amazon</option>
+                            <option>Microsoft</option>
+                            <option>Facebook</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select">
+                            <option value="">All Roles</option>
+                            <option>Software Engineer</option>
+                            <option>Frontend Developer</option>
+                            <option>Backend Developer</option>
+                            <option>Full Stack Developer</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row">
+                <!-- Filters -->
+                <div class="col-md-3">
+                    <div class="filter-section">
+                        <h5 class="filter-title">Experience Level</h5>
+                        <div class="filter-item">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="entry">
+                                <label class="form-check-label" for="entry">Entry Level</label>
+                            </div>
+                        </div>
+                        <div class="filter-item">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="mid">
+                                <label class="form-check-label" for="mid">Mid Level</label>
+                            </div>
+                        </div>
+                        <div class="filter-item">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="senior">
+                                <label class="form-check-label" for="senior">Senior Level</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h5 class="filter-title">Interview Type</h5>
+                        <div class="filter-item">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="technical">
+                                <label class="form-check-label" for="technical">Technical</label>
+                            </div>
+                        </div>
+                        <div class="filter-item">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="behavioral">
+                                <label class="form-check-label" for="behavioral">Behavioral</label>
+                            </div>
+                        </div>
+                        <div class="filter-item">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="system">
+                                <label class="form-check-label" for="system">System Design</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Listings -->
+                <div class="col-md-9">
+                    <!-- Job Card 1 -->
+                    <div class="job-card">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <img src="https://via.placeholder.com/60" class="company-logo" alt="Google">
+                            </div>
+                            <div class="col">
+                                <h3 class="job-title">Software Engineer Interview</h3>
+                                <p class="company-name mb-2">Google</p>
+                                <div class="job-meta mb-2">
+                                    <span class="me-3"><i class="fas fa-map-marker-alt me-1"></i>Mountain View, CA</span>
+                                    <span class="me-3"><i class="fas fa-clock me-1"></i>Posted 2 days ago</span>
+                                    <span><i class="fas fa-star me-1"></i>4.5/5</span>
+                                </div>
+                                <div>
+                                    <span class="job-tag">System Design</span>
+                                    <span class="job-tag">Algorithms</span>
+                                    <span class="job-tag">Senior Level</span>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Card 2 -->
+                    <div class="job-card">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <img src="https://via.placeholder.com/60" class="company-logo" alt="Amazon">
+                            </div>
+                            <div class="col">
+                                <h3 class="job-title">Frontend Developer Interview</h3>
+                                <p class="company-name mb-2">Amazon</p>
+                                <div class="job-meta mb-2">
+                                    <span class="me-3"><i class="fas fa-map-marker-alt me-1"></i>Seattle, WA</span>
+                                    <span class="me-3"><i class="fas fa-clock me-1"></i>Posted 5 days ago</span>
+                                    <span><i class="fas fa-star me-1"></i>4.2/5</span>
+                                </div>
+                                <div>
+                                    <span class="job-tag">React</span>
+                                    <span class="job-tag">JavaScript</span>
+                                    <span class="job-tag">Mid Level</span>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Card 3 -->
+                    <div class="job-card">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <img src="https://via.placeholder.com/60" class="company-logo" alt="Microsoft">
+                            </div>
+                            <div class="col">
+                                <h3 class="job-title">Backend Developer Interview</h3>
+                                <p class="company-name mb-2">Microsoft</p>
+                                <div class="job-meta mb-2">
+                                    <span class="me-3"><i class="fas fa-map-marker-alt me-1"></i>Redmond, WA</span>
+                                    <span class="me-3"><i class="fas fa-clock me-1"></i>Posted 1 week ago</span>
+                                    <span><i class="fas fa-star me-1"></i>4.3/5</span>
+                                </div>
+                                <div>
+                                    <span class="job-tag">Java</span>
+                                    <span class="job-tag">Spring Boot</span>
+                                    <span class="job-tag">Entry Level</span>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation" class="pagination">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
     </div>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Location</th>
-            <th>Company</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="job : ${jobs}">
-            <td th:text="${job.title}"></td>
-            <td th:text="${job.location}"></td>
-            <td th:text="${companyMap[job.companyId]}">Company Name</td>
-            <td>
-                <a th:href="@{'/jobs/delete/' + ${job.id}}" class="btn btn-sm btn-danger">Delete</a>
-                <a th:href="@{'/jobs/update/' + ${job.id}}" class="btn btn-sm btn-danger">Update</a>
-                <a th:href="@{'/jobs/view/' + ${job.id}}" class="btn btn-sm btn-danger">View</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
 </body>
 </html>
