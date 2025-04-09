@@ -1,26 +1,42 @@
 package com.careerconnect.controller;
 
 import com.careerconnect.model.Company;
+import com.careerconnect.model.ExperienceReview;
 import com.careerconnect.service.CompanyService;
+import com.careerconnect.service.ExperienceReviewService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("/companies")
 public class CompanyController {
 
     private final CompanyService companyService;
+    private final ExperienceReviewService reviewService;
 
-    public CompanyController(CompanyService companyService) {
+    public CompanyController(CompanyService companyService, ExperienceReviewService reviewService) {
         this.companyService = companyService;
+        this.reviewService = reviewService;
     }
 
     @GetMapping
     public String showCompanies(Model model) {
-        model.addAttribute("companies", companyService.getAllCompanies());
+        List<Company> companies = companyService.getAllCompanies();
+        Map<Long, List<ExperienceReview>> companyReviews = companies.stream()
+                .collect(Collectors.toMap(
+                    Company::getId,
+                    company -> reviewService.getByCompanyId(company.getId())
+                ));
+
+        model.addAttribute("companies", companies);
+        model.addAttribute("companyReviews", companyReviews);
         return "companies";
     }
 
